@@ -1,0 +1,36 @@
+{
+  "name": "amlib",
+  "version": "0.0.1",
+  "description": "AMLib",
+  "license": "MIT",
+  "main": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreme/amlib.git"
+  },
+  "homepage": "https://github.com/andreme/amlib",
+  "author": "Andre Meyer",
+  "keywords": [
+    "library"
+  ],
+  "scripts": {
+    "build": "yarn run clean && yarn run babel src --out-dir dist --copy-files",
+    "clean": "rimraf ./dist",
+    "prepublish": "yarn run build",
+    "test": "jest",
+    "test:coverage": "npm run test -- --coverage",
+    "test:coverage:deploy": "npm run test:coverage && codecov"
+  },
+  "peerDependencies": {},
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "rimraf": "^2.6.2"
+  }
+}
