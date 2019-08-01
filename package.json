@@ -1,6 +1,6 @@
 {
   "name": "amlib",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "AMLib",
   "license": "MIT",
   "main": "dist/index",
@@ -19,7 +19,7 @@
   "scripts": {
     "build": "yarn run clean && yarn run babel src --out-dir dist --copy-files",
     "clean": "rimraf ./dist",
-    "prepublish": "yarn run build",
+    "prepare": "yarn run build",
     "test": "jest",
     "test:coverage": "npm run test -- --coverage",
     "test:coverage:deploy": "npm run test:coverage && codecov"
