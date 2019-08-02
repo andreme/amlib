@@ -1,6 +1,6 @@
 {
   "name": "amlib",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "AMLib",
   "license": "MIT",
   "main": "dist/index",
@@ -18,19 +18,26 @@
   ],
   "scripts": {
     "build": "yarn run clean && yarn run babel src --out-dir dist --copy-files",
+    "build:dev": "yarn run clean && yarn run babel src --out-dir dist --copy-files --watch",
     "clean": "rimraf ./dist",
     "prepare": "yarn run build",
     "test": "jest",
     "test:coverage": "npm run test -- --coverage",
     "test:coverage:deploy": "npm run test:coverage && codecov"
   },
-  "peerDependencies": {},
-  "dependencies": {
+  "peerDependencies": {
+    "addressparser": "^1.0.1",
+    "lodash": "^4.17.15",
+    "validate.js": "^0"
   },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "rimraf": "^2.6.2"
+    "addressparser": "^1.0.1",
+    "lodash": "^4.17.15",
+    "rimraf": "^2.6.2",
+    "validate.js": "^0"
   }
 }
