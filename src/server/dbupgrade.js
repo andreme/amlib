@@ -11,7 +11,7 @@ function getFilesFromDir(dir, files) {
 		.forEach(file => {
 			const filename = path.join(dir, file);
 			if (fs.lstatSync(filename).isFile()) {
-				const id = file.match(/^\d+/)[0];
+				const id = toInt(file.match(/^\d+/)[0]);
 				if (files[id]) {
 					throw new Error('Duplicate Upgrade - ID: '+id);
 				}

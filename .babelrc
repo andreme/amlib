@@ -3,7 +3,8 @@
     ["@babel/preset-env",
       {
         "targets": {
-          "node": "10"
+          "node": "10",
+          "ie": "11"
         }
       }]
   ]
