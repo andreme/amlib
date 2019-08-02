@@ -1,3 +1,4 @@
+import PgPromise from 'pg-promise';
 
 export function extendPGP(obj) {
 	obj.first = first;
@@ -33,11 +34,11 @@ function insert(table, idColumn, values) {
 
 	const columns = Object.keys(values);
 
-	const columnsSQL = (columns.length ? '('+columns.map(pgp.as.name).join(',')+')' : '');
+	const columnsSQL = (columns.length ? '('+columns.map(PgPromise.as.name).join(',')+')' : '');
 	const valuesSQL = (columns.length ? `VALUES (`+columns.map(c => `$[${c}]`).join(',')+`)` : 'DEFAULT VALUES');
 
 	if (idColumn) {
-		const sql = `INSERT INTO ${table} ${columnsSQL} ${valuesSQL} RETURNING ${pgp.as.name(idColumn)}`;
+		const sql = `INSERT INTO ${table} ${columnsSQL} ${valuesSQL} RETURNING ${PgPromise.as.name(idColumn)}`;
 
 		return (this || db).one(sql, values).then(row => row[idColumn]);
 	} else {
@@ -66,7 +67,7 @@ function update(table, idColumn, values, filter = null) {
 		filter[idColumn] = values[idColumn];
 	}
 
-	let sql = `UPDATE ${table} SET `+columns.map(c => `${pgp.as.name(c)} = $[${c}]`).join(",\n");
+	let sql = `UPDATE ${table} SET `+columns.map(c => `${PgPromise.as.name(c)} = $[${c}]`).join(",\n");
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 
@@ -80,14 +81,14 @@ function buildFilter(filter) {
 
 	const sql = Object.keys(filter).map(field => {
 		if (filter[field] === null) {
-			return `${pgp.as.name(field)} IS NULL`;
+			return `${PgPromise.as.name(field)} IS NULL`;
 		} else {
 			values[`_filter_`+field] = filter[field];
 
 			if (Array.isArray(filter[field])) {
-				return `${pgp.as.name(field)} = ANY($[_filter_${field}])`;
+				return `${PgPromise.as.name(field)} = ANY($[_filter_${field}])`;
 			} else {
-				return `${pgp.as.name(field)} = $[_filter_${field}]`;
+				return `${PgPromise.as.name(field)} = $[_filter_${field}]`;
 			}
 		}
 	}).join(' AND ');
