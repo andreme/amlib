@@ -1,6 +1,11 @@
 import {createSubmissionError} from './errors';
 import _ from 'lodash';
-import validateJS from 'validate.js';
+
+let validateJS;
+
+export function setValidateJS(_validateJS) {
+	validateJS = _validateJS;
+}
 
 let submissionErrorLogger = null;
 

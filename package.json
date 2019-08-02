@@ -1,9 +1,9 @@
 {
   "name": "amlib",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AMLib",
   "license": "MIT",
-  "main": "dist/index",
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],
@@ -27,6 +27,7 @@
   },
   "peerDependencies": {
     "addressparser": "^1.0.1",
+    "axios": "^0.19.0",
     "lodash": "^4.17.15",
     "validate.js": "^0"
   },
@@ -36,6 +37,7 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "addressparser": "^1.0.1",
+    "axios": "^0.19.0",
     "lodash": "^4.17.15",
     "rimraf": "^2.6.2",
     "validate.js": "^0"
