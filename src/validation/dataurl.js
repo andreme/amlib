@@ -6,6 +6,8 @@ export function addDataURL(validateJS) {
 			return null;
 		}
 
+		// TODO check for ^data: ?
+
 		if (/[^A-Z0-9+\/=]/i.test(value.split(',')[1])) {
 			return 'invalid';
 		}
@@ -17,7 +19,16 @@ export function addDataURL(validateJS) {
 			return null;
 		}
 
-		return Buffer.from(value.split(',')[1], 'base64');
+		const split = value.split(',');
+
+		if (options.extended) {
+			return {
+				mime: split[0].replace(/^data:/, '').replace(/;base64$/, ''),
+				data: Buffer.from(split[1], 'base64')
+			};
+		}
+
+		return Buffer.from(split[1], 'base64');
 	};
 
 }

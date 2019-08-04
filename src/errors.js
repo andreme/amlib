@@ -40,7 +40,7 @@ export class ConnectionError extends Error {
 
 }
 
-class SubmissionError extends Error {
+export class SubmissionError extends Error {
 
 	constructor(errors) {
 		super('Submit Validation Failed');
