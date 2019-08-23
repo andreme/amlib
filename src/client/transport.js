@@ -2,8 +2,14 @@ import {ConnectionError, createSubmissionError, isSubmissionError, isUserError, 
 
 let errorLogger = console.log;
 
+let sendCredentials = false;
+
 export function setErrorLogger(func) {
 	errorLogger = func;
+}
+
+export function setSendCredentials(value) {
+	sendCredentials = !!value;
 }
 
 export async function checkURLExists(URL) {
@@ -31,6 +37,7 @@ async function doFetch(input, init) {
 		url: input,
 		data: init.body,
 		headers: init.headers,
+		withCredentials: sendCredentials,
 	});
 
 	if (typeof response.data !== 'object') {
@@ -66,7 +73,6 @@ async function doFetch(input, init) {
 export async function fetchJSON(input, init = {}) {
 	const _init = {
 		...init,
-		// credentials: 'same-origin',
 		headers: {
 			...init.headers,
 			Accept: 'application/json',
