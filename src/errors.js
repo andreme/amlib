@@ -59,14 +59,18 @@ export function createSubmissionError(errors) {
 }
 
 export function isSubmissionError(error) {
-	return (error.name == submissionErrorClass.name)
+	return (error && (
+		(error.name == submissionErrorClass.name)
 		|| (error.name == 'SubmissionError')
 		|| (error.name == SubmissionError.name)
-		|| (error instanceof SubmissionError);
+		|| (error instanceof SubmissionError)
+	));
 }
 
 export function isUserError(error) {
-	return error._isUserError
+	return (error && (
+		error._isUserError
 		|| (error instanceof UserError)
-		|| (error.name == 'UserError');
+		|| (error.name == 'UserError')
+	));
 }
