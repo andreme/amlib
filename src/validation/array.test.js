@@ -1,10 +1,12 @@
 import v from 'validate.js';
 import {addArray} from './array';
-import {transform} from '../validation';
+import {setValidateJS, transform} from '../validation';
+
+setValidateJS(v);
 
 addArray(v, transform);
 
-describe('Validation - Array (New)', () => {
+describe('Validation - Array', () => {
 
 	it('throws error when plain or object is missing', () => {
 		expect.assertions(1);
@@ -184,6 +186,23 @@ describe('Validation - Array (New)', () => {
 		});
 	});
 
+	it('uses isElementEmpty when specified', () => {
+
+		const errors = v({prop_a: [1]}, {
+			prop_a: {
+				array: {
+					length: { min: 1 },
+					plain: {},
+					isElementEmpty: el => 1/0 && el === 1,
+				},
+			},
+		});
+
+		expect(errors).toEqual({
+			prop_a: ['does not have at least 1 element'],
+		});
+	});
+
 	describe('Plain value', () => {
 
 		it('can validate', () => {
@@ -265,7 +284,7 @@ describe('Validation - Array (New)', () => {
 			});
 
 			expect(errors).toEqual({
-				"prop_a[1]": ['required'],
+				"prop_a[1]": ['can\'t be blank'],
 			});
 		});
 
@@ -341,7 +360,7 @@ describe('Validation - Array (New)', () => {
 			});
 
 			expect(errors).toEqual({
-				"prop_o[1].a": ['required'],
+				"prop_o[1].a": ['can\'t be blank'],
 			});
 		});
 
@@ -374,7 +393,7 @@ describe('Validation - Array (New)', () => {
 			});
 
 			expect(errors).toEqual({
-				"prop_o[0].a": ['required'],
+				"prop_o[0].a": ['can\'t be blank'],
 			});
 		});
 
@@ -396,8 +415,8 @@ describe('Validation - Array (New)', () => {
 			});
 
 			expect(errors).toEqual({
-				"prop_o[0].a": ['required'],
-				"prop_o[0].b": ['required'],
+				"prop_o[0].a": ['can\'t be blank'],
+				"prop_o[0].b": ['can\'t be blank'],
 			});
 		});
 
@@ -429,35 +448,35 @@ describe('Validation - Array (New)', () => {
 
 		it('returns null for null', () => {
 
-			const result = v.validators.newarray.transform(null);
+			const result = v.validators.array.transform(null);
 
 			expect(result).toBe(null);
 		});
 
 		it('returns null for undefined', () => {
 
-			const result = v.validators.newarray.transform(undefined);
+			const result = v.validators.array.transform(undefined);
 
 			expect(result).toBe(null);
 		});
 
 		it('returns null for empty string', () => {
 
-			const result = v.validators.newarray.transform('');
+			const result = v.validators.array.transform('');
 
 			expect(result).toBe(null);
 		});
 
 		it('returns empty array for empty array', () => {
 
-			const result = v.validators.newarray.transform([]);
+			const result = v.validators.array.transform([]);
 
 			expect(result).toEqual([]);
 		});
 
 		it('returns empty array for empty values when returnArrayForEmpty = true', () => {
 
-			const result = v.validators.newarray.transform(null, {returnArrayForEmpty: true});
+			const result = v.validators.array.transform(null, {returnArrayForEmpty: true});
 
 			expect(result).toEqual([]);
 		});
@@ -467,7 +486,7 @@ describe('Validation - Array (New)', () => {
 			v.validators.dummy = () => {};
 			v.validators.dummy.transform = () => 'z';
 
-			const result = v.validators.newarray.transform(['1'], {plain: {dummy: true}});
+			const result = v.validators.array.transform(['1'], {plain: {dummy: true}});
 
 			expect(result).toEqual(['z']);
 		});
@@ -477,35 +496,42 @@ describe('Validation - Array (New)', () => {
 			v.validators.dummy = () => {};
 			v.validators.dummy.transform = () => 'z';
 
-			const result = v.validators.newarray.transform([{a: 1}], {object: {a: {dummy: true}}});
+			const result = v.validators.array.transform([{a: 1}], {object: {a: {dummy: true}}});
 
 			expect(result).toEqual([{a: 'z'}]);
 		});
 
 		it('removes null values in object array by default', () => {
 
-			const result = v.validators.newarray.transform([null], {object: {a: {}}});
+			const result = v.validators.array.transform([null], {object: {a: {}}});
 
 			expect(result).toEqual([]);
 		});
 
 		it('keeps null values for object array when preserveEmptyElements = true', () => {
 
-			const result = v.validators.newarray.transform([null], {preserveEmptyElements: true, object: {a: {}}});
+			const result = v.validators.array.transform([null], {preserveEmptyElements: true, object: {a: {}}});
 
 			expect(result).toEqual([null]);
 		});
 
 		it('removes null values in plain array by default', () => {
 
-			const result = v.validators.newarray.transform([null], {plain: {}});
+			const result = v.validators.array.transform([null], {plain: {}});
+
+			expect(result).toEqual([]);
+		});
+
+		it('uses isElementEmpty to check element emptiness', () => {
+
+			const result = v.validators.array.transform([1], {plain: {}, isElementEmpty: el => el === 1});
 
 			expect(result).toEqual([]);
 		});
 
 		it('keeps null values for plain array when preserveEmptyElements = true', () => {
 
-			const result = v.validators.newarray.transform([null], {preserveEmptyElements: true, plain: {}});
+			const result = v.validators.array.transform([null], {preserveEmptyElements: true, plain: {}});
 
 			expect(result).toEqual([null]);
 		});

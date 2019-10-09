@@ -1,6 +1,10 @@
 
 export function addArray(validateJS, transform, name = 'array') {
 
+	function isElementEmpty(el, options) {
+		return (options.isElementEmpty || validateJS.isEmpty)(el);
+	}
+
 	validateJS.validators[name] = function (value, options, key, attributes, globalOptions) {
 
 		if (validateJS.isEmpty(value)) {
@@ -27,7 +31,7 @@ export function addArray(validateJS, transform, name = 'array') {
 			switch (option) {
 				case 'plain':
 					value.forEach((el, index) => {
-						if (!preserveEmptyElements && validateJS.isEmpty(el)) {
+						if (!preserveEmptyElements && isElementEmpty(el, options)) {
 							return;
 						}
 
@@ -47,7 +51,7 @@ export function addArray(validateJS, transform, name = 'array') {
 					break;
 				case 'object':
 					value.forEach((el, index) => {
-						if (!preserveEmptyElements && validateJS.isEmpty(el)) {
+						if (!preserveEmptyElements && isElementEmpty(el, options)) {
 							return;
 						}
 
@@ -69,7 +73,7 @@ export function addArray(validateJS, transform, name = 'array') {
 					});
 					break;
 				case 'length':
-					const arrayLength = preserveEmptyElements ? value.length : value.filter(el => !validateJS.isEmpty(el)).length;
+					const arrayLength = preserveEmptyElements ? value.length : value.filter(el => !isElementEmpty(el, options)).length;
 
 					const elementName = (options.elementName || 'element');
 
@@ -105,7 +109,7 @@ export function addArray(validateJS, transform, name = 'array') {
 
 		if (options && options.object) {
 			value = value
-				.map(el => validateJS.isEmpty(el) ? null : transform(el, options.object));
+				.map(el => isElementEmpty(el, options) ? null : transform(el, options.object));
 		}
 
 		if (options && options.plain) {
@@ -115,7 +119,7 @@ export function addArray(validateJS, transform, name = 'array') {
 		}
 
 		if (!options || !options.preserveEmptyElements) {
-			value = value.filter(el => !validateJS.isEmpty(el));
+			value = value.filter(el => !isElementEmpty(el, options));
 		}
 
 		return value;
