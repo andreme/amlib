@@ -51,7 +51,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['does not have 1 element'],
+			prop_a: [{
+				_error: 'does not have 1 element',
+			}],
 		});
 	});
 
@@ -68,7 +70,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['does not have 1 Q'],
+			prop_a: [{
+				_error: 'does not have 1 Q',
+			}],
 		});
 	});
 
@@ -85,7 +89,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['does not have 2 Zs'],
+			prop_a: [{
+				_error: 'does not have 2 Zs',
+			}],
 		});
 	});
 
@@ -101,7 +107,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['does not have at least 1 element'],
+			prop_a: [{
+				_error: 'does not have at least 1 element',
+			}],
 		});
 	});
 
@@ -117,7 +125,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['does not have at least 1 element'],
+			prop_a: [{
+				_error: 'does not have at least 1 element',
+			}],
 		});
 	});
 
@@ -133,7 +143,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['does not have at least 1 element'],
+			prop_a: [{
+				_error: 'does not have at least 1 element',
+			}],
 		});
 	});
 
@@ -149,7 +161,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['has more than 1 element'],
+			prop_a: [{
+				_error: 'has more than 1 element',
+			}],
 		});
 	});
 
@@ -182,7 +196,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['is not an array'],
+			prop_a: [{
+				_error: 'is not an array',
+			}],
 		});
 	});
 
@@ -199,7 +215,9 @@ describe('Validation - Array', () => {
 		});
 
 		expect(errors).toEqual({
-			prop_a: ['does not have at least 1 element'],
+			prop_a: [{
+				_error: 'does not have at least 1 element',
+			}],
 		});
 	});
 

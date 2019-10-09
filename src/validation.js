@@ -66,7 +66,11 @@ export function validate(values, constraints, options = {}) {
 	const result = {};
 	for (let f of Object.keys(errors)) {
 		errors[f] = errors[f][0];
-		_.set(result, f, errors[f][0].toUpperCase()+errors[f].substr(1));
+		if (errors[f]._error) {
+			_.set(result, f+'._error', errors[f]._error[0].toUpperCase() + errors[f]._error.substr(1));
+		} else {
+			_.set(result, f, errors[f][0].toUpperCase()+errors[f].substr(1));
+		}
 	}
 
 	return result;

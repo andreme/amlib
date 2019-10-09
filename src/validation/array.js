@@ -12,7 +12,7 @@ export function addArray(validateJS, transform, name = 'array') {
 		}
 
 		if (!validateJS.isArray(value)) {
-			return '^is not an array';
+			return {_error: 'is not an array'};
 		}
 
 		if (!validateJS.isHash(options.plain) && !validateJS.isHash(options.object)) {
@@ -72,32 +72,34 @@ export function addArray(validateJS, transform, name = 'array') {
 						}
 					});
 					break;
-				case 'length':
-					const arrayLength = preserveEmptyElements ? value.length : value.filter(el => !isElementEmpty(el, options)).length;
-
-					const elementName = (options.elementName || 'element');
-
-					if (options.length.is) {
-
-						if (arrayLength != options.length.is) {
-							error.push('^does not have ' + options.length.is + ' ' + elementName + (options.length.is != 1 ? 's' : ''));
-						}
-					}
-
-					if (options.length.min) {
-						if (arrayLength < options.length.min) {
-							error.push('^does not have at least ' + options.length.min + ' ' + elementName + (options.length.min != 1 ? 's' : ''));
-						}
-					}
-
-					if (options.length.max) {
-						if (arrayLength > options.length.max) {
-							error.push('^has more than ' + options.length.max + ' ' + elementName + (options.length.max != 1 ? 's' : ''));
-						}
-					}
-					break;
 			}
 		}
+
+		if (options.length && !error.length) {
+			const arrayLength = preserveEmptyElements ? value.length : value.filter(el => !isElementEmpty(el, options)).length;
+
+			const elementName = (options.elementName || 'element');
+
+			if (options.length.is) {
+
+				if (arrayLength != options.length.is) {
+					return {_error: 'does not have ' + options.length.is + ' ' + elementName + (options.length.is != 1 ? 's' : '')};
+				}
+			}
+
+			if (options.length.min) {
+				if (arrayLength < options.length.min) {
+					return {_error: 'does not have at least ' + options.length.min + ' ' + elementName + (options.length.min != 1 ? 's' : '')};
+				}
+			}
+
+			if (options.length.max) {
+				if (arrayLength > options.length.max) {
+					error = {_error: 'has more than ' + options.length.max + ' ' + elementName + (options.length.max != 1 ? 's' : '')};
+				}
+			}
+		}
+
 
 		return error;
 	};
