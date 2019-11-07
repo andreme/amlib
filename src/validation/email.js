@@ -10,6 +10,10 @@ export function fixEmail(validateJS) {
 			return origEmailValidator.call(origEmailValidator, value, options, key, attributes);
 		}
 
+		if (String(value).includes(':')) {
+			return '^Invalid character colon. Use semicolons to separate multiple email addresses.';
+		}
+
 		const addresses = addressparser(String(value));
 
 		return addresses.reduce((result, {address}) => {

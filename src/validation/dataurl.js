@@ -8,7 +8,7 @@ export function addDataURL(validateJS) {
 
 		// TODO check for ^data: ?
 
-		if (/[^A-Z0-9+\/=]/i.test(value.split(',')[1])) {
+		if (!value.split || /[^A-Z0-9+\/=]/i.test(value.split(',')[1])) {
 			return 'invalid';
 		}
 
