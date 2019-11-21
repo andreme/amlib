@@ -5,7 +5,7 @@ export function addBool(validateJS) {
 	};
 	validateJS.validators.Bool.transform = function (value, options) {
 
-		if (options.noDefault && (value === null)) {
+		if (options.noDefault && (value === null || value === undefined)) {
 			return null;
 		}
 
