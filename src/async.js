@@ -1,5 +1,7 @@
 
 export async function mapAsync(arr, cb) {
+	arr = await arr;
+
 	if (!Array.isArray(arr)) {
 		return arr;
 	}
@@ -14,6 +16,8 @@ export async function mapAsync(arr, cb) {
 }
 
 export async function filterAsync(arr, cb) {
+	arr = await arr;
+
 	if (!Array.isArray(arr)) {
 		return arr;
 	}
