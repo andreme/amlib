@@ -1,12 +1,12 @@
 {
   "name": "amlib",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "AMLib",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
     "dist",
-    "src"
+    "server"
   ],
   "repository": {
     "type": "git",
@@ -18,11 +18,11 @@
     "library"
   ],
   "scripts": {
-    "build": "yarn run clean && yarn run test && yarn run babel src --out-dir dist --copy-files",
-    "build:dev": "yarn run clean && yarn run babel src --out-dir dist --copy-files --watch",
-    "clean": "rimraf ./dist",
+    "build": "yarn run test && yarn run clean && yarn run babel src --config-file=./.babelrc_client --out-dir dist --copy-files && yarn run babel src --config-file=./.babelrc_server --out-dir server --copy-files",
+    "build:dev": "yarn run clean && yarn run babel src --config-file=./.babelrc_client --out-dir dist --copy-files --watch",
+    "clean": "rimraf ./dist ./server .babelrc",
     "prepare": "yarn run build",
-    "test": "jest",
+    "test": "copy .babelrc_server .babelrc && jest",
     "test:coverage": "npm run test -- --coverage",
     "test:coverage:deploy": "npm run test:coverage && codecov"
   },
@@ -38,9 +38,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
     "addressparser": "^1.0.1",
     "axios": "^0.19.0",
     "jest": "^24.9.0",
