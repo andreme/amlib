@@ -1,11 +1,12 @@
 {
   "name": "amlib",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "AMLib",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "repository": {
     "type": "git",
