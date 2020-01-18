@@ -19,6 +19,10 @@ export function addDataURL(validateJS) {
 			return null;
 		}
 
+		if (options.noTransform) {
+			return value;
+		}
+
 		const split = value.split(',');
 
 		if (options.extended) {
