@@ -1,6 +1,6 @@
 {
   "name": "amlib",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "AMLib",
   "license": "MIT",
   "main": "dist/index.js",

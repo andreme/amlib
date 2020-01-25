@@ -1,5 +1,9 @@
 import {isSubmissionError, isUserError} from '../errors';
 
+export function getExtraUserInfo(error) {
+	return error.extraUserInfo ? `\n\n${error.extraUserInfo}` : '';
+}
+
 export function errorHandlerMiddleware(handleErrorStart, handleError, isDevelopment) {
 
 	return async (ctx, next) => {
@@ -24,7 +28,7 @@ export function errorHandlerMiddleware(handleErrorStart, handleError, isDevelopm
 			if (isUserError(error)) {
 				return {
 					ErrorType: 'UserError',
-					Error: error.message,
+					Error: error.message+getExtraUserInfo(error),
 					Code: error.code,
 				};
 			}
