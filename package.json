@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "addressparser": "^1.0.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "lodash": "^4.17.15",
     "pg-promise": "8.4.5",
     "validate.js": "^0"
@@ -42,7 +42,7 @@
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "addressparser": "^1.0.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "jest": "^24.9.0",
     "lodash": "^4.17.15",
     "pg-promise": "8.4.5",
