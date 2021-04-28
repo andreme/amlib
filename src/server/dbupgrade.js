@@ -20,16 +20,23 @@ function getFilesFromDir(dir, files) {
 		});
 }
 
-function getExecutedUpgrades(db) {
-	return db.any(`SELECT id FROM upgrades`)
-		.then(rows => {
-			let result = {};
-			rows.forEach(r => {
-				result[r.id] = true;
-			});
+async function getExecutedUpgrades(db) {
+	try {
+		const rows = db.any(`SELECT id FROM upgrades`);
 
-			return result;
+		const result = {};
+		rows.forEach(r => {
+			result[r.id] = true;
 		});
+
+		return result;
+	} catch (e) {
+		if (e.code === '42P01') {
+			return {};
+		}
+
+		throw e;
+	}
 }
 
 export async function upgradeDB(db, directories) {
