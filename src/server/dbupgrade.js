@@ -22,8 +22,7 @@ function getFilesFromDir(dir, files) {
 
 async function getExecutedUpgrades(db) {
 	try {
-		const rows = db.any(`SELECT id FROM upgrades`);
-
+		const rows = await db.any(`SELECT id FROM upgrades`);
 		const result = {};
 		rows.forEach(r => {
 			result[r.id] = true;
