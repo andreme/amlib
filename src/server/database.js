@@ -149,11 +149,12 @@ function selectMany(table, filter, order = null) {
 
 function selectAny(table, filter, order = null) {
 
-	let sql = `SELECT * FROM ${table} WHERE `;
+	let sql = `SELECT * FROM ${table}`;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
-
-	sql += filterSQL;
+	if (filterSQL) {
+		sql += ' WHERE ' + filterSQL;
+	}
 
 	if (order) {
 		sql += ' ORDER BY '+order.join(', ');
@@ -164,11 +165,12 @@ function selectAny(table, filter, order = null) {
 
 function selectOneOrNone(table, filter) {
 
-	let sql = `SELECT * FROM ${table} WHERE `;
+	let sql = `SELECT * FROM ${table}`;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
-
-	sql += filterSQL;
+	if (filterSQL) {
+		sql += ' WHERE ' + filterSQL;
+	}
 
 	return (this || db).oneOrNone(sql, filterValues);
 }
