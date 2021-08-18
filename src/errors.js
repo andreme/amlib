@@ -1,12 +1,15 @@
 
 export class UserError extends Error {
 
-	constructor(message, fileName, lineNumber) {
-		super(message, fileName, lineNumber);
+	code = null;
+
+	constructor(message, code) {
+		super(message);
 		if (!this.message) {
 			this.message = message; // fixes missing message in Edge
 		}
 		this._isUserError = true; // x instanceof UserError does not work due to babel transforms
+		this.code = code;
 	}
 
 	static fromError(e) {
