@@ -1,8 +1,6 @@
 
 export class UserError extends Error {
 
-	code = null;
-
 	constructor(message, code) {
 		super(message);
 		if (!this.message) {
