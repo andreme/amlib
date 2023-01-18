@@ -1,5 +1,7 @@
 import PgPromise from 'pg-promise';
 
+const pgIdent = PgPromise.as.name;
+
 export function extendPGP(obj) {
 	obj.first = first;
 	obj.insert = insert;
@@ -34,15 +36,15 @@ function insert(table, idColumn, values) {
 
 	const columns = Object.keys(values);
 
-	const columnsSQL = (columns.length ? '('+columns.map(PgPromise.as.name).join(',')+')' : '');
+	const columnsSQL = (columns.length ? '('+columns.map(pgIdent).join(',')+')' : '');
 	const valuesSQL = (columns.length ? `VALUES (`+columns.map(c => `$[${c}]`).join(',')+`)` : 'DEFAULT VALUES');
 
 	if (idColumn) {
-		const sql = `INSERT INTO ${table} ${columnsSQL} ${valuesSQL} RETURNING ${PgPromise.as.name(idColumn)}`;
+		const sql = `INSERT INTO ${pgIdent(table)} ${columnsSQL} ${valuesSQL} RETURNING ${pgIdent(idColumn)}`;
 
 		return (this || db).one(sql, values).then(row => row[idColumn]);
 	} else {
-		const sql = `INSERT INTO ${table} ${columnsSQL} ${valuesSQL}`;
+		const sql = `INSERT INTO ${pgIdent(table)} ${columnsSQL} ${valuesSQL}`;
 
 		return (this || db).none(sql, values).then(() => null);
 	}
@@ -61,13 +63,13 @@ function update(table, idColumn, values, filter = null) {
 	values = {...values};
 	filter = {...filter};
 
-	const columns = Object.keys(values).filter(c => c != idColumn);
+	const columns = Object.keys(values).filter(c => c !== idColumn);
 
 	if (idColumn) {
 		filter[idColumn] = values[idColumn];
 	}
 
-	let sql = `UPDATE ${table} SET `+columns.map(c => `${PgPromise.as.name(c)} = $[${c}]`).join(",\n");
+	let sql = `UPDATE ${pgIdent(table)} SET `+columns.map(c => `${pgIdent(c)} = $[${c}]`).join(",\n");
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 
@@ -81,14 +83,14 @@ function buildFilter(filter) {
 
 	const sql = Object.keys(filter).map(field => {
 		if (filter[field] === null) {
-			return `${PgPromise.as.name(field)} IS NULL`;
+			return `${pgIdent(field)} IS NULL`;
 		} else {
 			values[`_filter_`+field] = filter[field];
 
 			if (Array.isArray(filter[field])) {
-				return `${PgPromise.as.name(field)} = ANY($[_filter_${field}])`;
+				return `${pgIdent(field)} = ANY($[_filter_${field}])`;
 			} else {
-				return `${PgPromise.as.name(field)} = $[_filter_${field}]`;
+				return `${pgIdent(field)} = $[_filter_${field}]`;
 			}
 		}
 	}).join(' AND ');
@@ -98,7 +100,7 @@ function buildFilter(filter) {
 
 function del(table, filter) {
 
-	let sql = `DELETE FROM ${table} WHERE `;
+	let sql = `DELETE FROM ${pgIdent(table)} WHERE `;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 
@@ -109,7 +111,7 @@ function del(table, filter) {
 
 function selectOne(table, filter) {
 
-	let sql = `SELECT * FROM ${table}`;
+	let sql = `SELECT * FROM ${pgIdent(table)}`;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 	if (filterSQL) {
@@ -121,7 +123,7 @@ function selectOne(table, filter) {
 
 function selectNone(table, filter) {
 
-	let sql = `SELECT * FROM ${table}`;
+	let sql = `SELECT * FROM ${pgIdent(table)}`;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 	if (filterSQL) {
@@ -133,7 +135,7 @@ function selectNone(table, filter) {
 
 function selectMany(table, filter, order = null) {
 
-	let sql = `SELECT * FROM ${table}`;
+	let sql = `SELECT * FROM ${pgIdent(table)}`;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 	if (filterSQL) {
@@ -149,7 +151,7 @@ function selectMany(table, filter, order = null) {
 
 function selectAny(table, filter, order = null) {
 
-	let sql = `SELECT * FROM ${table}`;
+	let sql = `SELECT * FROM ${pgIdent(table)}`;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 	if (filterSQL) {
@@ -165,7 +167,7 @@ function selectAny(table, filter, order = null) {
 
 function selectOneOrNone(table, filter) {
 
-	let sql = `SELECT * FROM ${table}`;
+	let sql = `SELECT * FROM ${pgIdent(table)}`;
 
 	const {filterValues, filterSQL} = buildFilter(filter);
 	if (filterSQL) {
