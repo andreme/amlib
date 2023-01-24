@@ -143,7 +143,7 @@ function selectMany(table, filter, order = null) {
 	}
 
 	if (order) {
-		sql += ' ORDER BY '+order.join(', ');
+		sql += ' ORDER BY '+order.map(pgIdent).join(', ');
 	}
 
 	return (this || db).many(sql, filterValues);
@@ -159,7 +159,7 @@ function selectAny(table, filter, order = null) {
 	}
 
 	if (order) {
-		sql += ' ORDER BY '+order.join(', ');
+		sql += ' ORDER BY '+order.map(pgIdent).join(', ');
 	}
 
 	return (this || db).any(sql, filterValues);
